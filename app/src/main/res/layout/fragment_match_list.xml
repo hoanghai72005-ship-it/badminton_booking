@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8FAFC">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Top Header -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ghép kèo giao lưu"
+            android:textColor="#0F172A"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Tìm đối thủ hoặc nhóm giao lưu theo thời gian thực"
+            android:textColor="#64748B"
+            android:textSize="12sp" />
+
+        <!-- Bộ lọc trình độ (Chips) -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_all"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:checked="true"
+                    android:text="Tất cả"
+                    android:textColor="#334155"
+                    app:chipCornerRadius="50dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_beginner"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Mới chơi / Yếu"
+                    android:textColor="#334155"
+                    app:chipCornerRadius="50dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_intermediate"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Trung bình"
+                    android:textColor="#334155"
+                    app:chipCornerRadius="50dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_advanced"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Khá / Tốt"
+                    android:textColor="#334155"
+                    app:chipCornerRadius="50dp" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <!-- Danh sách bài đăng -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_match_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp"
+            android:clipToPadding="false"
+            android:paddingBottom="80dp"
+            tools:listitem="@layout/item_match" />
+
+    </LinearLayout>
+
+    <!-- Nút Tạo bài đăng mới (FAB) -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/btn_create_match_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:backgroundTint="#16A34A"
+        android:text="Tạo bài mới"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:icon="@android:drawable/ic_input_add"
+        app:iconTint="#FFFFFF" />
+
+</RelativeLayout>

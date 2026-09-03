@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_rounded_dialog"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Tiêu đề -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đánh giá cụm sân"
+            android:textAppearance="@style/TextAppearance.Badminton.H1"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:id="@+id/tv_court_name_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sân Thành Công"
+            android:textAppearance="@style/TextAppearance.Badminton.H2"
+            android:textColor="@color/court_green_primary"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- RatingBar -->
+        <RatingBar
+            android:id="@+id/rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1.0"
+            android:rating="5"
+            android:progressTint="#F59E0B"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Ô nhập nội dung nhận xét -->
+        <EditText
+            android:id="@+id/edt_review_comment"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/bg_edittext_outline"
+            android:gravity="top|start"
+            android:hint="Chia sẻ trải nghiệm của bạn về chất lượng thảm, ánh sáng, dịch vụ..."
+            android:padding="16dp"
+            android:textColorHint="@color/text_caption"
+            android:textSize="14sp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- CỤM 2 NÚT HÀNH ĐỘNG -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            android:weightSum="2">
+
+            <!-- Nút Hủy -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel_rating"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="Hủy"
+                android:textAllCaps="false"
+                android:letterSpacing="0"
+                android:textColor="#555555"
+                android:maxLines="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:paddingHorizontal="4dp"
+                app:backgroundTint="#E2E2E2"
+                app:cornerRadius="8dp"/>
+
+            <!-- Nút Gửi Đánh Giá -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_submit_rating"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Gửi đánh giá"
+                android:textAllCaps="false"
+                android:letterSpacing="0"
+                android:maxLines="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:paddingHorizontal="2dp"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="11sp"
+                app:autoSizeMaxTextSize="14sp"
+                app:autoSizeStepGranularity="1sp"
+                app:cornerRadius="8dp"
+                app:backgroundTint="@color/court_green_primary"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

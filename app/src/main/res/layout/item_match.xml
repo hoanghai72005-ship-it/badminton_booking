@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="2dp"
+    app:strokeColor="#E2E8F0"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header bài đăng: Người đăng & Badge Slot -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_host_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/tv_slot_status"
+                android:text="Đường Minh Hiếu (Chủ kèo)"
+                android:textColor="#0F172A"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_slot_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="#FFEDD5"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="Cần tuyển 1/4"
+                android:textColor="#F97316"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <!-- Trình độ yêu cầu -->
+        <TextView
+            android:id="@+id/tv_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="🎯 Trình độ: Trung bình (Kèo giao lưu vui vẻ)"
+            android:textColor="#334155"
+            android:textSize="13sp" />
+
+        <!-- Thời gian & Tên sân -->
+        <TextView
+            android:id="@+id/tv_time_and_court"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="⏰ 18:00 - 20:00 (Hôm nay)\n📍 Sân Cầu Lông ABC - Sân số 2"
+            android:textColor="#64748B"
+            android:textSize="13sp" />
+
+        <!-- Ghi chú / Yêu cầu thêm -->
+        <TextView
+            android:id="@+id/tv_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Ghi chú: Chia đều tiền sân + cầu, có sẵn nước uống."
+            android:textColor="#334155"
+            android:textSize="12sp"
+            android:textStyle="italic" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="12dp"
+            android:background="#E2E8F0" />
+
+        <!-- Nút Đăng ký / Hủy tham gia -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_join_match"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#16A34A"
+            android:text="ĐĂNG KÝ THAM GIA"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

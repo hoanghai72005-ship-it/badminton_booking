@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="screen_background">#F8FAFC</color>
+    <color name="surface_card">#FFFFFF</color>
+    <color name="court_green_primary">#16A34A</color>
+    <color name="court_dark_accent">#0F172A</color>
+    <color name="text_heading">#0F172A</color>
+    <color name="text_caption">#64748B</color>
+    <color name="border_light">#E2E8F0</color>
+    <color name="urgency_hot">#F97316</color>
+    <color name="slot_booked_bg">#E0E0E0</color> <!-- Nền xám cho slot đã đặt -->
+    <color name="slot_available_bg">#E8F5E9</color> <!-- Nền xanh nhạt cho slot trống -->
+    <color name="text_body">#666666</color> <!-- Màu xám cho chữ thường -->
+    <color name="transparent">#00000000</color> <!-- Màu trong suốt -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Màu cho Dashboard Chủ sân -->
+
+</resources>

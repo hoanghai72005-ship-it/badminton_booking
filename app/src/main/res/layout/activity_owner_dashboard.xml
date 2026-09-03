@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background">
+
+    <!-- Header / App Bar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface_card"
+        app:elevation="@dimen/elevation_light">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/screen_padding_horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xin chào, Chủ sân!"
+                    android:textAppearance="@style/TextAppearance.Badminton.Caption"
+                    android:textColor="@color/text_caption" />
+
+                <TextView
+                    android:id="@+id/tv_business_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cầu Lông Thành Công"
+                    android:textAppearance="@style/TextAppearance.Badminton.H2"
+                    android:textColor="@color/court_dark_accent" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_notifications"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_popup_reminder"
+                app:tint="@color/text_heading" />
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Nội dung chính -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/screen_padding_horizontal">
+
+            <!-- Phân hệ 1: Thống kê nhanh (Summary Stats) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:text="Tổng quan hôm nay"
+                android:textAppearance="@style/TextAppearance.Badminton.H2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:orientation="horizontal">
+
+                <!-- Card Số đơn -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_small"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/surface_card"
+                    app:cardCornerRadius="@dimen/radius_card"
+                    app:cardElevation="@dimen/elevation_none"
+                    app:strokeColor="@color/border_light"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_medium">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Số đơn đặt"
+                            android:textAppearance="@style/TextAppearance.Badminton.Caption" />
+
+                        <TextView
+                            android:id="@+id/tv_total_bookings"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="12"
+                            android:textAppearance="@style/TextAppearance.Badminton.H1"
+                            android:textColor="@color/court_green_primary" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Card Doanh thu -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/surface_card"
+                    app:cardCornerRadius="@dimen/radius_card"
+                    app:cardElevation="@dimen/elevation_none"
+                    app:strokeColor="@color/border_light"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_medium">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Doanh thu tạm tính"
+                            android:textAppearance="@style/TextAppearance.Badminton.Caption" />
+
+                        <TextView
+                            android:id="@+id/tv_total_revenue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="1.450K"
+                            android:textAppearance="@style/TextAppearance.Badminton.H1"
+                            android:textColor="@color/urgency_hot" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Phân hệ 2: Thao tác nhanh (Quick Actions) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_small"
+                android:text="Thao tác"
+                android:textAppearance="@style/TextAppearance.Badminton.H2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <!-- Nút Thêm Sân -->
+                <LinearLayout
+                    android:id="@+id/btn_action_add_court"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_circle_light_green"
+                        android:padding="12dp"
+                        android:src="@android:drawable/ic_input_add"
+                        app:tint="@color/court_green_primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Quản lý sân"
+                        android:textAppearance="@style/TextAppearance.Badminton.Caption"
+                        android:textColor="@color/text_heading" />
+                </LinearLayout>
+
+                <!-- Nút Quản lý Lịch -->
+                <LinearLayout
+                    android:id="@+id/btn_action_manage_schedule"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_circle_light_green"
+                        android:padding="12dp"
+                        android:src="@android:drawable/ic_menu_today"
+                        app:tint="@color/court_green_primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Lịch trống"
+                        android:textAppearance="@style/TextAppearance.Badminton.Caption"
+                        android:textColor="@color/text_heading" />
+                </LinearLayout>
+
+                <!-- Nút Quét QR (Check-in) -->
+                <LinearLayout
+                    android:id="@+id/btn_action_scan_qr"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_circle_light_green"
+                        android:padding="12dp"
+                        android:src="@android:drawable/ic_menu_camera"
+                        app:tint="@color/court_green_primary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Check-in QR"
+                        android:textAppearance="@style/TextAppearance.Badminton.Caption"
+                        android:textColor="@color/text_heading" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Phân hệ 3: Lịch đặt sắp diễn ra -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/spacing_small">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Lịch đặt sắp tới"
+                    android:textAppearance="@style/TextAppearance.Badminton.H2" />
+
+                <TextView
+                    android:id="@+id/tv_view_all_bookings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xem tất cả"
+                    android:textAppearance="@style/TextAppearance.Badminton.Caption"
+                    android:textColor="@color/court_green_primary"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Danh sách đơn đặt sân sẽ đổ vào đây -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_upcoming_bookings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

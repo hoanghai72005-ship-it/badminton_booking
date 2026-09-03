@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    android:orientation="vertical">
+
+    <!-- Header / App Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/screen_padding_horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/surface_card"
+        android:elevation="@dimen/elevation_light">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Khám phá sân"
+            android:textAppearance="@style/TextAppearance.Badminton.H1" />
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_sort_by_size"
+            app:tint="@color/text_heading"
+            android:contentDescription="Bộ lọc" />
+    </LinearLayout>
+
+    <!-- List Sân -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_court_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/screen_padding_horizontal"
+        android:paddingTop="@dimen/spacing_medium"
+        android:clipToPadding="false" />
+
+</LinearLayout>

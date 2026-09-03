@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F7FA"
+    android:padding="20dp">
+
+    <!-- HEADER -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:text="‹"
+            android:textSize="28sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Bộ lọc đơn"
+            android:textColor="#17202A"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+    <!-- NGÀY -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Ngày đặt sân"
+        android:textColor="#17202A"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnChonNgay"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="10dp"
+        android:text="📅  Chọn ngày"
+        android:textAllCaps="false" />
+
+
+    <!-- TRẠNG THÁI -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Trạng thái xử lý"
+        android:textColor="#17202A"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+
+    <RadioGroup
+        android:id="@+id/radioStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radioAll"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Tất cả trạng thái" />
+
+        <RadioButton
+            android:id="@+id/radioPending"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Chờ xác nhận" />
+
+        <RadioButton
+            android:id="@+id/radioConfirmed"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Đã xác nhận" />
+
+        <RadioButton
+            android:id="@+id/radioPlaying"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Đang diễn ra" />
+
+        <RadioButton
+            android:id="@+id/radioCompleted"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Hoàn thành" />
+
+        <RadioButton
+            android:id="@+id/radioCancelled"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Đã hủy" />
+
+    </RadioGroup>
+
+
+    <!-- ÁP DỤNG -->
+
+    <Button
+        android:id="@+id/btnApDung"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="20dp"
+        android:text="Áp dụng bộ lọc"
+        android:textAllCaps="false" />
+
+</LinearLayout>

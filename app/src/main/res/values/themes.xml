@@ -1,0 +1,36 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.BadmintonBooking" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.BadmintonBooking" parent="Base.Theme.BadmintonBooking" />
+    <style name="TextAppearance.Badminton.H1" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_heading</item>
+    </style>
+
+    <style name="TextAppearance.Badminton.H2" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_heading</item>
+    </style>
+
+    <style name="TextAppearance.Badminton.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_caption</item>
+    </style>
+    <!-- Kiểu chữ cho nội dung thông thường -->
+    <style name="TextAppearance.Badminton.Body" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_body</item>
+    </style>
+
+    <!-- Kiểu chữ cho các nút bấm -->
+    <style name="TextAppearance.Badminton.Button" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>
