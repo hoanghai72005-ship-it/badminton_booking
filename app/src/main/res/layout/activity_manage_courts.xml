@@ -4,74 +4,171 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F8FAFC"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:orientation="vertical">
 
-    <!-- Tiêu đề trang -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="QUẢN LÝ CỤM SÂN"
-        android:textColor="#0F172A"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Thêm sân con mới vào hệ thống dữ liệu"
-        android:textColor="#64748B"
-        android:textSize="14sp"
-        android:layout_marginBottom="32dp"/>
-
-    <!-- Ô nhập Mã cụm sân -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mã cụm sân"
-        android:textColor="#334155"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
-
-    <EditText
-        android:id="@+id/etComplexId"
+    <!-- Header xanh lá chủ đạo -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@android:drawable/edit_text"
-        android:hint="VD: CUM_CAU_GIAY_01"
-        android:paddingHorizontal="12dp"
-        android:layout_marginBottom="20dp"
-        android:inputType="text"/>
-
-    <!-- Ô nhập Tên sân con -->
-    <TextView
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tên sân con"
-        android:textColor="#334155"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
+        android:background="#059669"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="36dp"
+        android:paddingBottom="14dp">
 
-    <EditText
-        android:id="@+id/etCourtName"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@android:drawable/edit_text"
-        android:hint="VD: Sân số 1 (Thảm VIP)"
-        android:paddingHorizontal="12dp"
-        android:layout_marginBottom="32dp"
-        android:inputType="text"/>
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="#FFFFFF" />
 
-    <!-- Nút xác nhận thêm sân -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnAddCourt"
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_weight="1"
+            android:text="Quản lý sân &amp; Bảng giá"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="THÊM SÂN MỚI"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:backgroundTint="#16A34A"
-        app:cornerRadius="12dp" />
+        android:layout_height="match_parent"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Card chứa 4 trường thông tin cơ bản -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="2dp"
+                app:strokeColor="#E2E8F0"
+                app:strokeWidth="1dp"
+                android:layout_marginBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="THÔNG TIN CƠ BẢN CỦA SÂN"
+                        android:textColor="#059669"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- 1. Tên sân -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tên sân:"
+                        android:textColor="#334155"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="6dp"/>
+
+                    <EditText
+                        android:id="@+id/etCourtName"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_edittext_outline"
+                        android:hint="VD: Sân Cầu Lông ĐH Công Nghiệp"
+                        android:paddingHorizontal="12dp"
+                        android:textColor="#0F172A"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- 2. Địa chỉ sân -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Địa chỉ sân:"
+                        android:textColor="#334155"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="6dp"/>
+
+                    <EditText
+                        android:id="@+id/etCourtAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_edittext_outline"
+                        android:hint="VD: 298 Đ. Cầu Diễn, Minh Khai, Bắc Từ Liêm, Hà Nội"
+                        android:paddingHorizontal="12dp"
+                        android:textColor="#0F172A"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- 3. Số lượng sân con -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số sân (Số lượng sân con):"
+                        android:textColor="#334155"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="6dp"/>
+
+                    <EditText
+                        android:id="@+id/etCourtCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_edittext_outline"
+                        android:hint="VD: 8"
+                        android:inputType="number"
+                        android:paddingHorizontal="12dp"
+                        android:textColor="#0F172A"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- 4. Số tiền sân / Bảng giá -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số tiền sân (VNĐ / giờ):"
+                        android:textColor="#334155"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="6dp"/>
+
+                    <EditText
+                        android:id="@+id/etCourtPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_edittext_outline"
+                        android:hint="VD: 80000"
+                        android:inputType="number"
+                        android:paddingHorizontal="12dp"
+                        android:textColor="#0F172A"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="8dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Nút Lưu Thay Đổi -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveCourtInfo"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:text="LƯU THAY ĐỔI"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="#059669"
+                app:cornerRadius="12dp" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

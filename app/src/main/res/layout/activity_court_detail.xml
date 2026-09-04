@@ -104,14 +104,40 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" />
             </HorizontalScrollView>
+            <!-- 4. PHẦN CHỌN NGÀY TRONG TUẦN (MỚI THÊM VÀO GIỮA) -->
+            <TextView
+                android:id="@+id/tvSelectedDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingHorizontal="16dp"
+                android:text="Chọn ngày: Hôm nay"
+                android:textColor="#0F172A"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
-            <!-- 4. CHỌN GIỜ THEO DẠNG VUỐT SANG NGANG -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:paddingHorizontal="12dp"
+                android:scrollbars="none">
+
+                <!-- CHỨA 7 NÚT NGÀY TRONG TUẦN VUỐT NGANG -->
+                <LinearLayout
+                    android:id="@+id/layoutDates"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" />
+            </HorizontalScrollView>
+
+            <!-- 5. CHỌN GIỜ THEO DẠNG VUỐT SANG NGANG -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:paddingHorizontal="16dp"
-                android:text="Lịch trống hôm nay (Vuốt ngang để chọn ca)"
+                android:text="Lịch trống hôm nay"
                 android:textColor="#0F172A"
                 android:textSize="16sp"
                 android:textStyle="bold" />

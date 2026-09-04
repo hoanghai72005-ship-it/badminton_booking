@@ -1,10 +1,12 @@
 package com.example.badmintonbooking.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,11 +28,25 @@ public class MatchPostAdapter extends RecyclerView.Adapter<MatchPostAdapter.View
     private final List<MatchPost> postList;
     private final List<MatchPost> allPostsList;
     private final String CURRENT_USER = "Tôi";
+    private boolean isAdmin = false;
+    private static final String PREF_APPROVED_POSTS = "APPROVED_POSTS_PREF";
 
     public MatchPostAdapter(Context context, List<MatchPost> postList, List<MatchPost> allPostsList) {
         this.context = context;
         this.postList = postList;
         this.allPostsList = allPostsList;
+        this.isAdmin = false;
+    }
+
+    public MatchPostAdapter(Context context, List<MatchPost> postList, List<MatchPost> allPostsList, boolean isAdmin) {
+        this.context = context;
+        this.postList = postList;
+        this.allPostsList = allPostsList;
+        this.isAdmin = isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.isAdmin = admin;
     }
 
     @NonNull
@@ -49,66 +65,54 @@ public class MatchPostAdapter extends RecyclerView.Adapter<MatchPostAdapter.View
         holder.tvTimeDate.setText(post.getTimeSlot() + " | " + post.getDate());
         holder.tvLevel.setText("Trình độ: " + post.getLevelRequired());
         holder.tvAuthor.setText("Người đăng: " + post.getAuthorName());
+        holder.tvPlayers.setText("Số người: " + post.getCurrentPlayers() + "/" + post.getMaxPlayers());
 
-        updateUI(holder, post);
+        // PHÂN QUYỀN HÀNH ĐỘNG CHO QUẢN TRỊ VIÊN
+        if (isAdmin) {
+            // Ẩn nút "Tham gia", hiện cụm nút Duyệt & Xóa
+            if (holder.btnAction != null) holder.btnAction.setVisibility(View.GONE);
+            if (holder.layoutAdminActions != null) holder.layoutAdminActions.setVisibility(View.VISIBLE);
 
-        holder.btnAction.setOnClickListener(v -> {
-            if (post.isJoined()) {
-                // Hộp thoại xác nhận HỦY KÈO
-                new AlertDialog.Builder(context)
-                        .setTitle("Xác nhận hủy kèo")
-                        .setMessage("Bạn có muốn hủy tham gia kèo không?")
-                        .setPositiveButton("Đồng ý", (dialog, which) -> {
-                            int updatedPlayers = Math.max(1, post.getCurrentPlayers() - 1);
-                            post.setJoined(false);
-                            post.setCurrentPlayers(updatedPlayers);
+            SharedPreferences prefs = context.getSharedPreferences(PREF_APPROVED_POSTS, Context.MODE_PRIVATE);
+            boolean isApproved = prefs.getBoolean(post.getPostId(), false);
 
-                            AppDatabase.getDatabase(context).matchPostDao().updatePost(post);
-                            Toast.makeText(context, "Đã hủy tham gia kèo!", Toast.LENGTH_SHORT).show();
-
-                            if (context instanceof MatchListActivity) {
-                                ((MatchListActivity) context).loadPostsFromRoom();
-                            }
-                        })
-                        .setNegativeButton("Hủy", null)
-                        .show();
+            if (isApproved) {
+                holder.btnAdminApprove.setEnabled(false);
+                holder.btnAdminApprove.setText("ĐÃ DUYỆT ✓");
+                holder.btnAdminApprove.setBackgroundColor(Color.parseColor("#64748B"));
             } else {
-                // 1. Kiểm tra bài do chính mình đăng (Chủ kèo)
-                if (post.getAuthorName() != null &&
-                        (post.getAuthorName().equalsIgnoreCase(CURRENT_USER) || post.getAuthorName().equalsIgnoreCase("Tôi (Chủ kèo)"))) {
-                    Toast.makeText(context, "Bạn đã tham gia kèo đấu này rồi!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                holder.btnAdminApprove.setEnabled(true);
+                holder.btnAdminApprove.setText("Duyệt bài");
+                holder.btnAdminApprove.setBackgroundColor(Color.parseColor("#16A34A"));
+            }
 
-                // 2. Kiểm tra giao nhau / trùng khung giờ thi đấu
-                for (MatchPost p : allPostsList) {
-                    if (p != null && p.isJoined() && !p.getPostId().equals(post.getPostId())) {
-                        if (p.getDate() != null && p.getDate().equalsIgnoreCase(post.getDate())) {
-                            if (isTimeOverlap(post.getTimeSlot(), p.getTimeSlot())) {
-                                Toast.makeText(context, "Bị trùng/giao khung giờ với kèo đã tham gia (" + p.getTimeSlot() + " - " + p.getDate() + ")!", Toast.LENGTH_LONG).show();
-                                return;
-                            }
-                        }
-                    }
-                }
+            // 1. Thao tác DUYỆT BÀI
+            holder.btnAdminApprove.setOnClickListener(v -> {
+                prefs.edit().putBoolean(post.getPostId(), true).apply();
+                holder.btnAdminApprove.setEnabled(false);
+                holder.btnAdminApprove.setText("ĐÃ DUYỆT ✓");
+                holder.btnAdminApprove.setBackgroundColor(Color.parseColor("#64748B"));
+                Toast.makeText(context, "🎉 Đã duyệt bài đăng của " + post.getAuthorName() + "!", Toast.LENGTH_SHORT).show();
+            });
 
-                // 3. Kiểm tra số lượng người tối đa
-                if (post.getCurrentPlayers() >= post.getMaxPlayers()) {
-                    Toast.makeText(context, "Kèo đã đủ người!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                // Hộp thoại xác nhận THAM GIA KÈO
+            // 2. Thao tác XÓA BÀI (Xóa khỏi Room Database)
+            holder.btnAdminDelete.setOnClickListener(v -> {
                 new AlertDialog.Builder(context)
-                        .setTitle("Xác nhận tham gia")
-                        .setMessage("Bạn có muốn tham gia kèo không?")
-                        .setPositiveButton("Đồng ý", (dialog, which) -> {
-                            int updatedPlayers = post.getCurrentPlayers() + 1;
-                            post.setJoined(true);
-                            post.setCurrentPlayers(updatedPlayers);
+                        .setTitle("Xác nhận xóa bài đăng")
+                        .setMessage("Bạn có chắc chắn muốn xóa bài đăng ghép sân của \"" + post.getAuthorName() + "\" tại " + post.getCourtName() + " không?")
+                        .setPositiveButton("Xóa bài", (dialog, which) -> {
+                            // Xóa trong Room DB
+                            AppDatabase.getDatabase(context).matchPostDao().deletePostById(post.getPostId());
 
-                            AppDatabase.getDatabase(context).matchPostDao().updatePost(post);
-                            Toast.makeText(context, "Đã tham gia kèo thành công!", Toast.LENGTH_SHORT).show();
+                            // Xóa khỏi danh sách đang hiển thị
+                            int pos = holder.getAdapterPosition();
+                            if (pos != RecyclerView.NO_POSITION && pos < postList.size()) {
+                                postList.remove(pos);
+                                notifyItemRemoved(pos);
+                                notifyItemRangeChanged(pos, postList.size());
+                            }
+
+                            Toast.makeText(context, "🗑️ Đã xóa bài đăng thành công!", Toast.LENGTH_SHORT).show();
 
                             if (context instanceof MatchListActivity) {
                                 ((MatchListActivity) context).loadPostsFromRoom();
@@ -116,52 +120,66 @@ public class MatchPostAdapter extends RecyclerView.Adapter<MatchPostAdapter.View
                         })
                         .setNegativeButton("Hủy", null)
                         .show();
+            });
+
+        } else {
+            // Người chơi thông thường
+            if (holder.layoutAdminActions != null) holder.layoutAdminActions.setVisibility(View.GONE);
+            if (holder.btnAction != null) {
+                holder.btnAction.setVisibility(View.VISIBLE);
+                updateNormalUserUI(holder, post);
+
+                holder.btnAction.setOnClickListener(v -> {
+                    if (post.isJoined()) {
+                        new AlertDialog.Builder(context)
+                                .setTitle("Xác nhận hủy kèo")
+                                .setMessage("Bạn có muốn hủy tham gia kèo không?")
+                                .setPositiveButton("Đồng ý", (dialog, which) -> {
+                                    int updatedPlayers = Math.max(1, post.getCurrentPlayers() - 1);
+                                    post.setJoined(false);
+                                    post.setCurrentPlayers(updatedPlayers);
+                                    AppDatabase.getDatabase(context).matchPostDao().updatePost(post);
+                                    Toast.makeText(context, "Đã hủy tham gia kèo!", Toast.LENGTH_SHORT).show();
+                                    if (context instanceof MatchListActivity) {
+                                        ((MatchListActivity) context).loadPostsFromRoom();
+                                    }
+                                })
+                                .setNegativeButton("Hủy", null)
+                                .show();
+                    } else {
+                        if (post.getAuthorName() != null &&
+                                (post.getAuthorName().equalsIgnoreCase(CURRENT_USER) || post.getAuthorName().equalsIgnoreCase("Tôi (Chủ kèo)"))) {
+                            Toast.makeText(context, "Bạn đã tham gia kèo đấu này rồi!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if (post.getCurrentPlayers() >= post.getMaxPlayers()) {
+                            Toast.makeText(context, "Kèo đã đủ người!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        new AlertDialog.Builder(context)
+                                .setTitle("Xác nhận tham gia")
+                                .setMessage("Bạn có muốn tham gia kèo không?")
+                                .setPositiveButton("Đồng ý", (dialog, which) -> {
+                                    int updatedPlayers = post.getCurrentPlayers() + 1;
+                                    post.setJoined(true);
+                                    post.setCurrentPlayers(updatedPlayers);
+                                    AppDatabase.getDatabase(context).matchPostDao().updatePost(post);
+                                    Toast.makeText(context, "Đã tham gia kèo thành công!", Toast.LENGTH_SHORT).show();
+                                    if (context instanceof MatchListActivity) {
+                                        ((MatchListActivity) context).loadPostsFromRoom();
+                                    }
+                                })
+                                .setNegativeButton("Hủy", null)
+                                .show();
+                    }
+                });
             }
-        });
-    }
-
-    // --- HÀM KIỂM TRA 2 KHUNG GIỜ CÓ GIAO NHAU HAY KHÔNG ---
-    private boolean isTimeOverlap(String timeSlot1, String timeSlot2) {
-        try {
-            int[] times1 = parseTimeSlot(timeSlot1);
-            int[] times2 = parseTimeSlot(timeSlot2);
-
-            if (times1 == null || times2 == null) return false;
-
-            int start1 = times1[0], end1 = times1[1];
-            int start2 = times2[0], end2 = times2[1];
-
-            // Hai khoảng thời gian [start1, end1] và [start2, end2] giao nhau khi:
-            return start1 < end2 && start2 < end1;
-        } catch (Exception e) {
-            return false;
         }
     }
 
-    // Chuyển đổi chuỗi dạng "18:00 - 20:00" hoặc "18h - 20h" thành phút trong ngày
-    private int[] parseTimeSlot(String timeSlot) {
-        if (timeSlot == null || !timeSlot.contains("-")) return null;
-
-        String[] parts = timeSlot.split("-");
-        if (parts.length < 2) return null;
-
-        int startMinutes = parseToMinutes(parts[0].trim());
-        int endMinutes = parseToMinutes(parts[1].trim());
-
-        return new int[]{startMinutes, endMinutes};
-    }
-
-    private int parseToMinutes(String timeStr) {
-        timeStr = timeStr.toLowerCase().replace("h", ":").replace("g", ":").trim();
-        String[] timeParts = timeStr.split(":");
-        int hours = Integer.parseInt(timeParts[0].trim());
-        int minutes = (timeParts.length > 1 && !timeParts[1].trim().isEmpty()) ? Integer.parseInt(timeParts[1].trim()) : 0;
-        return hours * 60 + minutes;
-    }
-
-    private void updateUI(ViewHolder holder, MatchPost post) {
-        holder.tvPlayers.setText("Số người: " + post.getCurrentPlayers() + "/" + post.getMaxPlayers());
-
+    private void updateNormalUserUI(ViewHolder holder, MatchPost post) {
         if (post.isJoined()) {
             holder.btnAction.setText("HỦY KÈO");
             holder.btnAction.setBackgroundColor(Color.parseColor("#DC2626"));
@@ -179,6 +197,8 @@ public class MatchPostAdapter extends RecyclerView.Adapter<MatchPostAdapter.View
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvCourtName, tvPrice, tvTimeDate, tvLevel, tvPlayers, tvAuthor;
         MaterialButton btnAction;
+        LinearLayout layoutAdminActions;
+        MaterialButton btnAdminApprove, btnAdminDelete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -189,6 +209,10 @@ public class MatchPostAdapter extends RecyclerView.Adapter<MatchPostAdapter.View
             tvPlayers = itemView.findViewById(R.id.tv_item_players);
             tvAuthor = itemView.findViewById(R.id.tv_item_author);
             btnAction = itemView.findViewById(R.id.btn_item_action);
+
+            layoutAdminActions = itemView.findViewById(R.id.layout_admin_actions);
+            btnAdminApprove = itemView.findViewById(R.id.btn_admin_approve);
+            btnAdminDelete = itemView.findViewById(R.id.btn_admin_delete);
         }
     }
 }

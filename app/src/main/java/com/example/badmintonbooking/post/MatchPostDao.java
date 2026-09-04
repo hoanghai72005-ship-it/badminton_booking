@@ -25,6 +25,10 @@ public interface MatchPostDao {
     @Update
     void updatePost(MatchPost post);
 
+    // THÊM CÂU LỆNH NÀY ĐỂ ADMIN XÓA BÀI KHỎI DATABASE:
+    @Query("DELETE FROM match_posts WHERE postId = :postId")
+    void deletePostById(String postId);
+
     @Query("SELECT COUNT(*) FROM match_posts")
     int getCount();
 }

@@ -1,6 +1,7 @@
 package com.example.badmintonbooking.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.badmintonbooking.R;
 import com.example.badmintonbooking.adapter.HistoryAdapter;
 import com.example.badmintonbooking.data.Booking;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.*;
@@ -26,15 +28,19 @@ public class HistoryActivity extends AppCompatActivity {
 
     private RecyclerView rvHistory;
     private HistoryAdapter historyAdapter;
-    private List<Booking> bookingList;
+    private List<Booking> allBookingList;
+    private List<Booking> displayedBookingList;
     private LinearLayout layoutEmpty;
+
+    // 4 tab lọc trạng thái
+    private MaterialButton btnFilterAll, btnFilterConfirmed, btnFilterCompleted, btnFilterCancelled;
+    private String currentFilter = "ALL";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        // Nút quay lại trang Hồ sơ
         ImageView btnBack = findViewById(R.id.btnBack);
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> finish());
@@ -44,15 +50,83 @@ public class HistoryActivity extends AppCompatActivity {
         rvHistory = findViewById(R.id.rvHistory);
         rvHistory.setLayoutManager(new LinearLayoutManager(this));
 
-        bookingList = new ArrayList<>();
-        historyAdapter = new HistoryAdapter(this, bookingList, booking -> {
+        btnFilterAll = findViewById(R.id.btnFilterAll);
+        btnFilterConfirmed = findViewById(R.id.btnFilterConfirmed);
+        btnFilterCompleted = findViewById(R.id.btnFilterCompleted);
+        btnFilterCancelled = findViewById(R.id.btnFilterCancelled);
+
+        allBookingList = new ArrayList<>();
+        displayedBookingList = new ArrayList<>();
+
+        historyAdapter = new HistoryAdapter(this, displayedBookingList, booking -> {
             Intent intent = new Intent(HistoryActivity.this, DetailActivity.class);
             intent.putExtra("BOOKING_ID", booking.getBookingId());
             startActivity(intent);
         });
         rvHistory.setAdapter(historyAdapter);
 
+        // Sự kiện click tương tác cho cả 4 tab
+        btnFilterAll.setOnClickListener(v -> applyFilter("ALL"));
+        btnFilterConfirmed.setOnClickListener(v -> applyFilter("CONFIRMED"));
+        btnFilterCompleted.setOnClickListener(v -> applyFilter("COMPLETED"));
+        btnFilterCancelled.setOnClickListener(v -> applyFilter("CANCELLED"));
+
         loadUserHistorySafely();
+    }
+
+    private void applyFilter(String filter) {
+        this.currentFilter = filter;
+        updateTabStyles(filter);
+
+        displayedBookingList.clear();
+        for (Booking booking : allBookingList) {
+            String st = booking.getStatus();
+            if (st == null) st = "CONFIRMED";
+
+            if ("ALL".equalsIgnoreCase(filter)) {
+                displayedBookingList.add(booking);
+            } else if ("CONFIRMED".equalsIgnoreCase(filter)) {
+                if ("CONFIRMED".equalsIgnoreCase(st) || "PENDING".equalsIgnoreCase(st)) {
+                    displayedBookingList.add(booking);
+                }
+            } else if ("COMPLETED".equalsIgnoreCase(filter)) {
+                if ("COMPLETED".equalsIgnoreCase(st)) {
+                    displayedBookingList.add(booking);
+                }
+            } else if ("CANCELLED".equalsIgnoreCase(filter)) {
+                if ("CANCELLED".equalsIgnoreCase(st)) {
+                    displayedBookingList.add(booking);
+                }
+            }
+        }
+
+        historyAdapter.notifyDataSetChanged();
+
+        if (layoutEmpty != null) {
+            layoutEmpty.setVisibility(displayedBookingList.isEmpty() ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void updateTabStyles(String selectedFilter) {
+        setTabStyle(btnFilterAll, "ALL".equalsIgnoreCase(selectedFilter));
+        setTabStyle(btnFilterConfirmed, "CONFIRMED".equalsIgnoreCase(selectedFilter));
+        setTabStyle(btnFilterCompleted, "COMPLETED".equalsIgnoreCase(selectedFilter));
+        setTabStyle(btnFilterCancelled, "CANCELLED".equalsIgnoreCase(selectedFilter));
+    }
+
+    private void setTabStyle(MaterialButton button, boolean isSelected) {
+        if (button == null) return;
+        if (isSelected) {
+            button.setTextColor(Color.parseColor("#059669"));
+            button.setStrokeColor(android.content.res.ColorStateList.valueOf(Color.parseColor("#059669")));
+            button.setStrokeWidth(3);
+            button.setBackgroundColor(Color.parseColor("#DCFCE7"));
+        } else {
+            button.setTextColor(Color.parseColor("#64748B"));
+            button.setStrokeColor(android.content.res.ColorStateList.valueOf(Color.parseColor("#CBD5E1")));
+            button.setStrokeWidth(2);
+            button.setBackgroundColor(Color.TRANSPARENT);
+        }
     }
 
     private void loadUserHistorySafely() {
@@ -66,17 +140,14 @@ public class HistoryActivity extends AppCompatActivity {
         DatabaseReference bookingsRef = FirebaseDatabase.getInstance("https://badminton-booking-9e3a2-default-rtdb.asia-southeast1.firebasedatabase.app/")
                 .getReference("bookings");
 
-        // Lắng nghe dữ liệu đơn đặt
         bookingsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 try {
-                    bookingList.clear();
+                    allBookingList.clear();
                     for (DataSnapshot item : snapshot.getChildren()) {
-                        // Đọc thủ công từng trường để chống crash 100%
                         String email = item.child("userEmail").getValue(String.class);
 
-                        // Chỉ lấy các đơn thuộc tài khoản đang đăng nhập
                         if (email != null && userEmail != null && !email.trim().equalsIgnoreCase(userEmail.trim())) {
                             continue;
                         }
@@ -85,7 +156,7 @@ public class HistoryActivity extends AppCompatActivity {
                         if (bId == null) bId = item.getKey();
 
                         String cId = item.child("courtId").getValue(String.class);
-                        if (cId == null) cId = "Sân Cầu Lông";
+                        if (cId == null) cId = "Sân Cầu Lông ĐH Công Nghiệp";
 
                         Double total = 0.0;
                         try {
@@ -99,15 +170,11 @@ public class HistoryActivity extends AppCompatActivity {
                         Booking booking = new Booking(bId, cId, email, total, null, System.currentTimeMillis());
                         booking.setStatus(status);
 
-                        // Đưa đơn đặt mới nhất lên đầu danh sách
-                        bookingList.add(0, booking);
+                        allBookingList.add(0, booking);
                     }
 
-                    historyAdapter.notifyDataSetChanged();
+                    applyFilter(currentFilter);
 
-                    if (layoutEmpty != null) {
-                        layoutEmpty.setVisibility(bookingList.isEmpty() ? View.VISIBLE : View.GONE);
-                    }
                 } catch (Exception e) {
                     Toast.makeText(HistoryActivity.this, "Lỗi nạp lịch sử: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }

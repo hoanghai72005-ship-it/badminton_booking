@@ -162,7 +162,7 @@ public class MapActivity extends AppCompatActivity {
                 // DANH SÁCH CÁC SÂN CẦU LÔNG THỰC TẾ QUANH KHU VỰC HÀ NỘI
                 "    var courts = [" +
                 "      { id: 'court_01', name: 'Sân Cầu Lông TTBC Lai Xá', lat: 21.0560, lng: 105.7280, dist: 'Cách bạn 450m', price: '80.000đ / giờ', pVal: 80000 }," +
-                "      { id: 'court_02', name: 'Sân Cầu Lông ĐH Công Nghiệp', lat: 21.0538, lng: 105.7354, dist: 'Tại khuôn viên trường', price: '70.000đ / giờ', pVal: 70000 }," +
+                "      { id: 'court_02', name: 'Sân Cầu Lông ĐH Công Nghiệp', lat: 21.0538, lng: 105.7354, dist: 'Tại khuôn viên trường', price: '80.000đ / giờ', pVal: 70000 }," +
                 "      { id: 'court_03', name: 'Sân Cầu Lông Tây Tựu', lat: 21.0610, lng: 105.7250, dist: 'Cách bạn 1.1km', price: '80.000đ / giờ', pVal: 80000 }," +
                 "      { id: 'court_04', name: 'Sân Cầu Lông Phúc Diễn', lat: 21.0470, lng: 105.7500, dist: 'Cách bạn 1.5km', price: '85.000đ / giờ', pVal: 85000 }," +
                 "      { id: 'court_05', name: 'Sân Cầu Lông Thành Công', lat: 21.0510, lng: 105.7420, dist: 'Cách bạn 800m', price: '80.000đ / giờ', pVal: 80000 }," +

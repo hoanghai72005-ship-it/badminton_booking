@@ -8,9 +8,7 @@
     android:orientation="vertical"
     android:paddingTop="36dp">
 
-
-
-    <!-- HEADER XANH LÁ CHỦ ĐẠO -->
+    <!-- Header xanh lá chủ đạo -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +37,7 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- THANH BỘ LỌC TRẠNG THÁI -->
+    <!-- 4 Tab trạng thái có thể cuộn và tương tác -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,6 +50,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <!-- Tab 1: Tất cả -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnFilterAll"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -60,8 +59,11 @@
                 android:text="Tất cả"
                 android:textColor="#059669"
                 app:cornerRadius="20dp"
-                app:strokeColor="#059669" />
+                app:strokeColor="#059669"
+                app:strokeWidth="2dp"
+                android:backgroundTint="#DCFCE7"/>
 
+            <!-- Tab 2: Đã xác nhận -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnFilterConfirmed"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -71,8 +73,25 @@
                 android:text="Đã xác nhận"
                 android:textColor="#64748B"
                 app:cornerRadius="20dp"
-                app:strokeColor="#CBD5E1" />
+                app:strokeColor="#CBD5E1"
+                app:strokeWidth="1dp"
+                android:backgroundTint="@android:color/transparent"/>
 
+            <!-- Tab 3: Đã hoàn thành (Mới bổ sung) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFilterCompleted"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:text="Đã hoàn thành"
+                android:textColor="#64748B"
+                app:cornerRadius="20dp"
+                app:strokeColor="#CBD5E1"
+                app:strokeWidth="1dp"
+                android:backgroundTint="@android:color/transparent"/>
+
+            <!-- Tab 4: Đã hủy -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnFilterCancelled"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -82,11 +101,13 @@
                 android:text="Đã hủy"
                 android:textColor="#64748B"
                 app:cornerRadius="20dp"
-                app:strokeColor="#CBD5E1" />
+                app:strokeColor="#CBD5E1"
+                app:strokeWidth="1dp"
+                android:backgroundTint="@android:color/transparent"/>
         </LinearLayout>
     </HorizontalScrollView>
 
-    <!-- DANH SÁCH ĐƠN HÀNG -->
+    <!-- Danh sách đơn hàng -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHistory"
         android:layout_width="match_parent"
@@ -98,7 +119,7 @@
         android:paddingBottom="16dp"
         tools:listitem="@layout/item_history" />
 
-    <!-- GIAO DIỆN KHI CHƯA CÓ ĐƠN NÀO -->
+    <!-- Giao diện khi danh sách rỗng -->
     <LinearLayout
         android:id="@+id/layoutEmpty"
         android:layout_width="match_parent"

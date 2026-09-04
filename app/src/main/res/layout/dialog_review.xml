@@ -1,37 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:fillViewport="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Chất lượng sân bãi &amp; Dịch vụ"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="12dp" />
-
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:numStars="5"
-        android:stepSize="1.0"
-        android:rating="5"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp" />
-
-    <EditText
-        android:id="@+id/edtComment"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nhập nhận xét của bạn về mặt thảm, ánh sáng..."
-        android:minLines="3"
-        android:gravity="top|start"
-        android:background="@android:drawable/editbox_background"
-        android:padding="10dp" />
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_rounded_dialog"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-</LinearLayout>
+        <!-- Tiêu đề -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đánh giá cụm sân"
+            android:textAppearance="@style/TextAppearance.Badminton.H1"
+            android:textStyle="bold"
+            android:textColor="#0F172A"
+            android:layout_marginBottom="4dp"/>
+
+        <!-- Tên cụm sân màu xanh lá chủ đạo -->
+        <TextView
+            android:id="@+id/tv_court_name_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sân Cầu Lông ĐH Công Nghiệp"
+            android:textAppearance="@style/TextAppearance.Badminton.H2"
+            android:textColor="#059669"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- RatingBar: 5 sao vàng hổ phách nổi bật (#F59E0B) -->
+        <RatingBar
+            android:id="@+id/rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1.0"
+            android:rating="5"
+            android:progressTint="#F59E0B"
+            android:secondaryProgressTint="#FCD34D"
+            android:layout_marginBottom="18dp"/>
+
+        <!-- Ô nhập nhận xét viền bo góc -->
+        <EditText
+            android:id="@+id/edt_review_comment"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:background="@drawable/bg_edittext_outline"
+            android:gravity="top|start"
+            android:hint="Chia sẻ trải nghiệm của bạn về chất lượng thảm, ánh sáng, dịch vụ..."
+            android:padding="14dp"
+            android:textColorHint="#94A3B8"
+            android:textColor="#1E293B"
+            android:textSize="14sp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Cụm nút bấm -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            android:weightSum="2">
+
+            <!-- Nút Hủy -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel_rating"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="Hủy"
+                android:textAllCaps="false"
+                android:letterSpacing="0"
+                android:textColor="#64748B"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:backgroundTint="#E2E8F0"
+                app:cornerRadius="10dp"/>
+
+            <!-- Nút Gửi đánh giá: Nền xanh lá #059669 -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_submit_rating"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Gửi đánh giá"
+                android:textAllCaps="false"
+                android:letterSpacing="0"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp"
+                app:backgroundTint="#059669"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

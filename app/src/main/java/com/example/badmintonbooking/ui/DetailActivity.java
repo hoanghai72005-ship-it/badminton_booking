@@ -2,11 +2,8 @@ package com.example.badmintonbooking.ui;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,7 +84,7 @@ public class DetailActivity extends AppCompatActivity {
                     if (tObj instanceof Number) total = ((Number) tObj).doubleValue();
                     tvDetailTotalAmount.setText("Tổng thanh toán: " + new DecimalFormat("###,###,###").format(total) + " VNĐ");
 
-                    // Đọc danh sách ca giờ
+                    // Đọc danh sách ca giờ đặt
                     DataSnapshot slotsSnap = snapshot.child("bookedSlots");
                     if (slotsSnap.exists()) {
                         StringBuilder sb = new StringBuilder("Khung giờ đặt:\n");
@@ -105,12 +102,13 @@ public class DetailActivity extends AppCompatActivity {
                     if (currentStatus == null) currentStatus = "PENDING";
                     updateStatusUI(currentStatus);
 
+                    // Trạng thái nút Đánh giá
                     Boolean rev = snapshot.child("reviewed").getValue(Boolean.class);
                     isReviewed = Boolean.TRUE.equals(rev);
 
                     if (isReviewed) {
                         btnDanhGia.setEnabled(false);
-                        btnDanhGia.setText("Đã đánh giá");
+                        btnDanhGia.setText("Đã đánh giá ⭐");
                         btnDanhGia.setAlpha(0.5f);
                     } else {
                         btnDanhGia.setEnabled(true);
@@ -118,10 +116,18 @@ public class DetailActivity extends AppCompatActivity {
                         btnDanhGia.setAlpha(1.0f);
                     }
 
-                    if ("CANCELLED".equalsIgnoreCase(currentStatus)) {
+                    // CHẶN HỦY ĐƠN KHI ĐÃ HOÀN THÀNH HOẶC ĐÃ HỦY
+                    if ("COMPLETED".equalsIgnoreCase(currentStatus)) {
                         btnHuyDon.setEnabled(false);
-                        btnHuyDon.setText("Đã hủy đơn");
-                        btnHuyDon.setAlpha(0.5f);
+                        btnHuyDon.setVisibility(View.GONE); // Ẩn nút hủy đơn
+                    } else if ("CANCELLED".equalsIgnoreCase(currentStatus)) {
+                        btnHuyDon.setEnabled(false);
+                        btnHuyDon.setVisibility(View.GONE);
+                    } else {
+                        btnHuyDon.setEnabled(true);
+                        btnHuyDon.setVisibility(View.VISIBLE);
+                        btnHuyDon.setText("Hủy đơn đặt");
+                        btnHuyDon.setAlpha(1.0f);
                     }
                 } catch (Exception e) {
                     Toast.makeText(DetailActivity.this, "Lỗi nạp đơn: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -134,7 +140,6 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void updateStatusUI(String status) {
-        // Reset mặc định
         tvStatusChoXacNhan.setBackgroundColor(Color.parseColor("#F1F5F9"));
         tvStatusChoXacNhan.setTextColor(Color.parseColor("#64748B"));
         tvStatusDaXacNhan.setBackgroundColor(Color.parseColor("#F1F5F9"));
@@ -162,6 +167,15 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void handleCancelBooking() {
+        if ("COMPLETED".equalsIgnoreCase(currentStatus)) {
+            Toast.makeText(this, "Ca chơi đã hoàn thành, không thể hủy đơn đặt!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if ("CANCELLED".equalsIgnoreCase(currentStatus)) {
+            Toast.makeText(this, "Đơn đặt này đã bị hủy trước đó!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         new AlertDialog.Builder(this)
                 .setTitle("Hủy lịch đặt")
                 .setMessage("Bạn có chắc chắn muốn hủy đơn đặt sân này? Khung giờ sẽ được giải phóng ngay lập tức.")
@@ -173,7 +187,7 @@ public class DetailActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             try {
                                 String targetCourtId = snapshot.child("actualCourtId").getValue(String.class);
-                                if (targetCourtId == null) targetCourtId = "court_02"; // Khớp đúng nhánh trong ảnh Firebase
+                                if (targetCourtId == null) targetCourtId = "court_02";
 
                                 String subCourt = snapshot.child("subCourt").getValue(String.class);
                                 if (subCourt == null) subCourt = "Sân 1";
@@ -222,38 +236,32 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void showReviewDialog() {
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_review, null);
-        RatingBar ratingBar = dialogView.findViewById(R.id.ratingBar);
-        EditText edtComment = dialogView.findViewById(R.id.edtComment);
+        String targetName = (courtId != null && !courtId.isEmpty()) ? courtId : "Sân Cầu Lông ĐH Công Nghiệp";
+        RatingDialog ratingDialog = new RatingDialog(targetName, (rating, comment) -> {
+            String userId = FirebaseAuth.getInstance().getCurrentUser() != null
+                    ? FirebaseAuth.getInstance().getCurrentUser().getUid() : "anonymous";
+            String userEmail = FirebaseAuth.getInstance().getCurrentUser() != null
+                    ? FirebaseAuth.getInstance().getCurrentUser().getEmail() : "anonymous";
 
-        new AlertDialog.Builder(this)
-                .setTitle("Đánh giá cụm sân")
-                .setView(dialogView)
-                .setPositiveButton("Gửi", (dialog, which) -> {
-                    float rating = ratingBar.getRating();
-                    String comment = edtComment.getText().toString().trim();
-                    String userId = FirebaseAuth.getInstance().getCurrentUser() != null
-                            ? FirebaseAuth.getInstance().getCurrentUser().getUid() : "anonymous";
+            DatabaseReference revRef = FirebaseDatabase.getInstance("https://badminton-booking-9e3a2-default-rtdb.asia-southeast1.firebasedatabase.app/")
+                    .getReference("reviews").child(courtId != null ? courtId : "court_01");
 
-                    DatabaseReference revRef = FirebaseDatabase.getInstance("https://badminton-booking-9e3a2-default-rtdb.asia-southeast1.firebasedatabase.app/")
-                            .getReference("reviews").child(courtId != null ? courtId : "court_01");
+            String rId = revRef.push().getKey();
+            Map<String, Object> map = new HashMap<>();
+            map.put("bookingId", bookingId);
+            map.put("userId", userId);
+            map.put("userEmail", userEmail);
+            map.put("rating", rating);
+            map.put("comment", comment);
+            map.put("createdAt", System.currentTimeMillis());
 
-                    String rId = revRef.push().getKey();
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("bookingId", bookingId);
-                    map.put("userId", userId);
-                    map.put("rating", rating);
-                    map.put("comment", comment);
-                    map.put("createdAt", System.currentTimeMillis());
-
-                    if (rId != null) {
-                        revRef.child(rId).setValue(map).addOnSuccessListener(aVoid -> {
-                            bookingRef.child("reviewed").setValue(true);
-                            Toast.makeText(this, "Cảm ơn bạn đã gửi nhận xét!", Toast.LENGTH_SHORT).show();
-                        });
-                    }
-                })
-                .setNegativeButton("Hủy", null)
-                .show();
+            if (rId != null) {
+                revRef.child(rId).setValue(map).addOnSuccessListener(aVoid -> {
+                    bookingRef.child("reviewed").setValue(true);
+                    Toast.makeText(DetailActivity.this, "🎉 Cảm ơn bạn đã gửi đánh giá!", Toast.LENGTH_SHORT).show();
+                });
+            }
+        });
+        ratingDialog.show(getSupportFragmentManager(), "RatingDialog");
     }
 }

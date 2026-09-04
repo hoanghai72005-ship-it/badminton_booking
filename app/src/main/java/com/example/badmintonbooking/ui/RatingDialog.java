@@ -47,24 +47,30 @@ public class RatingDialog extends DialogFragment {
         MaterialButton btnCancel = view.findViewById(R.id.btn_cancel_rating);
         MaterialButton btnSubmit = view.findViewById(R.id.btn_submit_rating);
 
-        tvCourtName.setText(courtName);
+        if (tvCourtName != null && courtName != null) {
+            tvCourtName.setText(courtName);
+        }
 
-        btnCancel.setOnClickListener(v -> dismiss());
+        if (btnCancel != null) {
+            btnCancel.setOnClickListener(v -> dismiss());
+        }
 
-        btnSubmit.setOnClickListener(v -> {
-            float rating = ratingBar.getRating();
-            String comment = edtComment.getText().toString().trim();
+        if (btnSubmit != null) {
+            btnSubmit.setOnClickListener(v -> {
+                float rating = ratingBar != null ? ratingBar.getRating() : 5.0f;
+                String comment = edtComment != null ? edtComment.getText().toString().trim() : "";
 
-            if (rating == 0) {
-                Toast.makeText(getContext(), "Vui lòng chọn số sao!", Toast.LENGTH_SHORT).show();
-                return;
-            }
+                if (rating == 0) {
+                    Toast.makeText(getContext(), "Vui lòng chọn số sao đánh giá!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-            if (listener != null) {
-                listener.onSubmitRating(rating, comment);
-            }
-            dismiss();
-        });
+                if (listener != null) {
+                    listener.onSubmitRating(rating, comment);
+                }
+                dismiss();
+            });
+        }
 
         return view;
     }

@@ -41,24 +41,30 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         Booking booking = bookingList.get(position);
         if (booking == null) return;
 
-        // 1. Gán Tên cụm sân & Sân con
         if (holder.tvHistoryCourtId != null) {
-            holder.tvHistoryCourtId.setText(booking.getCourtId() != null ? booking.getCourtId() : "Sân Cầu Lông");
+            holder.tvHistoryCourtId.setText(booking.getCourtId() != null ? booking.getCourtId() : "Sân Cầu Lông ĐH Công Nghiệp");
         }
 
-        // 2. Gán Giá tiền (Định dạng kiểu 160.000đ)
         if (holder.tvHistoryTotal != null) {
             DecimalFormat formatter = new DecimalFormat("###,###,###");
             holder.tvHistoryTotal.setText("Tổng tiền: " + formatter.format(booking.getTotalPrice()) + "đ");
         }
 
-        // 3. Gán Trạng thái đơn (Đổi màu badge xanh lá hoặc đỏ nếu bị hủy)
+        // Gán Badge màu theo 4 trạng thái
         String st = booking.getStatus() != null ? booking.getStatus() : "CONFIRMED";
         if (holder.tvHistoryStatus != null) {
             if ("CANCELLED".equalsIgnoreCase(st)) {
                 holder.tvHistoryStatus.setText("Đã hủy");
                 holder.tvHistoryStatus.setTextColor(Color.parseColor("#EF4444"));
                 holder.tvHistoryStatus.setBackgroundColor(Color.parseColor("#FEE2E2"));
+            } else if ("COMPLETED".equalsIgnoreCase(st)) {
+                holder.tvHistoryStatus.setText("Đã hoàn thành");
+                holder.tvHistoryStatus.setTextColor(Color.parseColor("#0284C7"));
+                holder.tvHistoryStatus.setBackgroundColor(Color.parseColor("#E0F2FE"));
+            } else if ("PENDING".equalsIgnoreCase(st)) {
+                holder.tvHistoryStatus.setText("Chờ duyệt");
+                holder.tvHistoryStatus.setTextColor(Color.parseColor("#D97706"));
+                holder.tvHistoryStatus.setBackgroundColor(Color.parseColor("#FEF3C7"));
             } else {
                 holder.tvHistoryStatus.setText("Đã xác nhận");
                 holder.tvHistoryStatus.setTextColor(Color.parseColor("#16A34A"));
@@ -66,7 +72,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             }
         }
 
-        // 4. Bắt sự kiện click vào thẻ để mở trang chi tiết đơn
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onBookingClick(booking);
