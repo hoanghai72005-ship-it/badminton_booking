@@ -108,4 +108,4 @@ badminton_booking/
 
 ## Tác giả
 
-* **Hoàng Thanh Hải** — [GitHub @hoanghai72005-ship-it](https://github.com/hoanghai72005-ship-it)
+* **Nhóm 10** — [GitHub @hoanghai72005-ship-it](https://github.com/hoanghai72005-ship-it)
